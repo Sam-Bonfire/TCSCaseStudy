@@ -1,7 +1,6 @@
-import os
-
-class Config(object):
-    SECRET_KEY = os.environ.get('SECRET_KEY') or  "secret_key"
-    #key generated using - py -c "import os; print(os.urandom(16))" command
-
-    #MONGODB_SETTINGS = { 'db' : 'UTA_Enrollment' }
+DB_ENGINE = 'mysql+pymysql'
+DB_USERNAME = 'root'
+DB_PASSWORD = ''
+DB_HOST = 'localhost'
+DB_PORT = '3306'
+DB_NAME = 'tcscasestudy'

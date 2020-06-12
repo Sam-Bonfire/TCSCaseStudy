@@ -1,6 +1,7 @@
+from . import db
+from flask import Blueprint, render_template
 
-from application import app
-from flask import render_template
+app = Blueprint('app', __name__)
 
 
 @app.route("/")
@@ -8,4 +9,3 @@ from flask import render_template
 @app.route("/home")
 def index():
     return render_template("base.html", index=True)
-

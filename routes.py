@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_login import login_user, login_required, current_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, request, flash, redirect, url_for
@@ -56,6 +58,8 @@ def login():
             flash('Please check your login details and try again.')
             return redirect(url_for('app.login'))
 
+        user.timestamp = datetime.now()
+        db.session.commit()
         login_user(user, remember=remember)
         return redirect(url_for('app.index'))
 

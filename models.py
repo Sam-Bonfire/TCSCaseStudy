@@ -8,11 +8,13 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_login = db.Column(db.String(35))
     password = db.Column(db.String(100))
+    type = db.Column(db.String(10))
     timestamp = db.Column(db.DateTime)
 
-    def __init__(self, user_login, password):
+    def __init__(self, user_login, password, type):
         self.user_login = user_login
         self.password = password
+        self.type = type
 
 
 class Customer(db.Model):

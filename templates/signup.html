@@ -1,27 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="column is-4 is-offset-4">
-        <h3 class="title">Sign Up</h3>
-        <div class="box">
-            <form method="POST" action="/signup">
-                <div class="field">
-
-                    <div class="control">
-                        <input class="input is-large" type="text" name="login" placeholder="Your Login Id" autofocus=""
+    <div class="col-md-6">
+        <div class="card text-center">
+            <div class="card-body align-content-center">
+                <h3 class="card-title">Sign Up</h3>
+                <form method="POST" action="/signup">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="login" placeholder="Your Login Id" autofocus=""
                                pattern="[A-Za-z0-9]{9}">
                     </div>
-                </div>
 
-                <div class="field">
-                    <div class="control">
-                        <input class="input is-large" type="password" name="password" placeholder="Your Password"
+                    <div class="form-group">
+                        <select name="type" class="custom-select mr-sm-2">
+                            <option selected>Select Employee Type</option>
+                            <option value="cashier">Cashier</option>
+                            <option value="executive">Executive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input class="form-control" type="password" name="password" placeholder="Your Password"
                                pattern="[A-Za-z0-9]{9}">
                     </div>
-                </div>
 
-                <button class="button is-block is-info is-large is-fullwidth">Sign Up</button>
-            </form>
+                    <div class="text-center">
+                        <button class="btn btn-primary">Sign Up</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

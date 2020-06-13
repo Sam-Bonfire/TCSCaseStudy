@@ -29,13 +29,16 @@ def signup():
     elif request.method == 'POST':
         user_login = request.form.get('login')
         password = request.form.get('password')
+        user_type = request.form.get('type')
 
         user = User.query.filter_by(user_login=user_login).first()
 
         if user:
             return redirect(url_for('app.signup'))
 
-        new_user = User(user_login=user_login, password=generate_password_hash(password, method='sha256'))
+        new_user = User(user_login=user_login,
+                        password=generate_password_hash(password, method='sha256'),
+                        type=user_type)
 
         db.session.add(new_user)
         db.session.commit()

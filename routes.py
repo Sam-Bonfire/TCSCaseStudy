@@ -53,24 +53,27 @@ def signup():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-    if request.method == 'POST':
-        user_login = request.form.get('login')
-        password = request.form.get('password')
-        remember = True if request.form.get('remember') else False
-
-        user = User.query.filter_by(user_login=user_login).first()
-
-        if not user or not check_password_hash(user.password, password):
-            flash('Please check your login details and try again.')
-            return redirect(url_for('app.login'))
-
-        user.timestamp = datetime.now()
-        db.session.commit()
-        login_user(user, remember=remember)
-        flash('User logged in', 'success')
+    if current_user:
         return redirect(url_for('app.ind'))
+    else:
+        if request.method == 'GET':
+            return render_template('login.html')
+        if request.method == 'POST':
+            user_login = request.form.get('login')
+            password = request.form.get('password')
+            remember = True if request.form.get('remember') else False
+
+            user = User.query.filter_by(user_login=user_login).first()
+
+            if not user or not check_password_hash(user.password, password):
+                flash('Please check your login details and try again.')
+                return redirect(url_for('app.login'))
+
+            user.timestamp = datetime.now()
+            db.session.commit()
+            login_user(user, remember=remember)
+            flash('User logged in', 'success')
+            return redirect(url_for('app.ind'))
 
 
 @app.route('/logout')

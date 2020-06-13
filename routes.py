@@ -54,6 +54,7 @@ def signup():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user:
+        flash('User already logged in', 'success')
         return redirect(url_for('app.ind'))
     else:
         if request.method == 'GET':

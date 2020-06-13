@@ -1,12 +1,17 @@
 from flask_login import UserMixin
 
-from __init__ import db
+from app import db
 
 
 class User(UserMixin, db.Model):
     __tablename__ = 'userstore'
-    login = db.Column(db.String(35), primary_key=True)
-    password = db.Column(db.String(35))
+    id = db.Column(db.Integer, primary_key=True)
+    user_login = db.Column(db.String(35))
+    password = db.Column(db.String(100))
+
+    def __init__(self, user_login, password):
+        self.user_login = user_login
+        self.password = password
 
 
 class Customer(db.Model):

@@ -1,4 +1,4 @@
-from flask_login import login_user, login_required, current_user
+from flask_login import login_user, login_required, current_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 
@@ -58,3 +58,10 @@ def login():
 
         login_user(user, remember=remember)
         return redirect(url_for('app.index'))
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('app.index'))

@@ -8,6 +8,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_login = db.Column(db.String(35))
     password = db.Column(db.String(100))
+    timestamp = db.Column(db.DateTime)
 
     def __init__(self, user_login, password):
         self.user_login = user_login

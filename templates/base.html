@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"/>
+
+    <style type="text/css">
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 168px;
+
+        }
+
+        .color-custom {
+            background-color: #33C6D8;
+            color: #5C5F5D;
+        }
+
+        body {
+            background-color: #F1EFF1;
+        }
+
+    </style>
+
+
+    <title>Retail Banking</title>
+</head>
+<body>
+<header class='site-header'>
+    <nav class="navbar color-custom">
+        <div class='navbar-brand'>
+            <span id='bank-name'>ABC Bank</span>
+            <small class='text-muted'> A Better Companion</small>
+        </div>
+    </nav>
+</header>
+<div class='container'>
+    <div class="row">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+<footer class="footer bg-secondary" style='flex-shrink:0;'>
+    <div class="container text-center  text-white-50">
+        <div class='row'>
+            <div class='col-4'>
+
+                <div class="pt-4">
+                    <h5>About Us</h5>
+                    <span>. Extensive repulsive belonging depending if promotion be zealously as.
+		    					Preference inquietude ask now are dispatched led appearance. Small meant in
+		    				</span>
+
+                </div>
+
+            </div>
+            <div class='col-4'>
+
+                <div class="pt-4">
+                    <h5>Services</h5>
+                    <span>Extensive repulsive belonging depending <br> if promotion be zealously as.
+		    					<br> Preference inquietude ask now are<br> dispatched led appearance. Small meant in
+							</span>
+                </div>
+
+            </div>
+            <div class='col-4'>
+
+                <div class="pt-4">
+                    <h5>Contact Us</h5>
+                    <span>Extensive repulsive belonging depending <br> if promotion be zealously as.
+		    					<br> Preference inquietude ask now are<br> dispatched led appearance. Small meant in
+		    				</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+</body>
+</html>

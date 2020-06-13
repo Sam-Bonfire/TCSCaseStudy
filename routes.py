@@ -4,7 +4,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 
-from models import User
+from models import User, Customer, Account
 from app import db
 
 app = Blueprint('app', __name__)
@@ -13,7 +13,10 @@ app = Blueprint('app', __name__)
 @app.route("/")
 @app.route("/home")
 def index():
-    return render_template("base.html", index=True)
+    if current_user:
+        return render_template("base.html", index=True, user=current_user.type)
+    else:
+        return render_template("base.html", index=True)
 
 
 @app.route("/index")
@@ -34,6 +37,7 @@ def signup():
         user = User.query.filter_by(user_login=user_login).first()
 
         if user:
+            flash('Login already exists, please try a different one', 'warning')
             return redirect(url_for('app.signup'))
 
         new_user = User(user_login=user_login,
@@ -42,6 +46,7 @@ def signup():
 
         db.session.add(new_user)
         db.session.commit()
+        flash('User created successfully', 'success')
 
         return redirect(url_for('app.login'))
 
@@ -64,7 +69,8 @@ def login():
         user.timestamp = datetime.now()
         db.session.commit()
         login_user(user, remember=remember)
-        return redirect(url_for('app.index'))
+        flash('User logged in', 'success')
+        return redirect(url_for('app.ind'))
 
 
 @app.route('/logout')
@@ -72,3 +78,46 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('app.index'))
+
+
+@app.route('/search_customer', methods=['GET', 'POST'])
+@login_required
+def search_customer():
+    if request.method == 'GET':
+        return render_template('search_customer.html', user=current_user.type)
+    elif request.method == 'POST':
+        account_id = request.form.get('account_id')
+        customer_id = request.form.get('customer_id')
+        account = None
+        if customer_id:
+            account = Account.query.filter_by(ws_cust_id=int(customer_id)).first()
+        elif account_id:
+            account = Account.query.filter_by(act_id=int(account_id)).first()
+        else:
+            flash('Invalid customer')
+        if account:
+            return render_template('search_customer.html', account=account)
+        else:
+            flash('Account does not exist', 'error')
+        flash('Please enter a value', 'warning')
+        return redirect(url_for('app.search_customer'))
+
+
+@app.route('/cashier_withdraw', methods=['POST'])
+@login_required
+def cashier_withdraw():
+    account_id = request.form.get('account_id')
+    account = Account.query.filter_by(act_id=account_id).first()
+    withdraw_amount = request.form.get('withdraw_amount')
+
+    if withdraw_amount:
+        if int(withdraw_amount) <= account.ws_acct_balance:
+            account.ws_acct_balance -= int(withdraw_amount)
+            db.session.commit()
+            flash('Amount Withdrawn', 'success')
+            return render_template('cashier_withdraw.html', account=account, user=current_user.type)
+        else:
+            flash('Balance Insufficient', 'error')
+            return render_template('cashier_withdraw.html', account=account, user=current_user.type)
+    else:
+        return render_template('cashier_withdraw.html', account=account, user=current_user.type)

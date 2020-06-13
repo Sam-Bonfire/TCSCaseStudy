@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if account %}
+        <h2>Withdraw Amount</h2>
+        <br>
+        <form action="/cashier_withdraw" method="POST">
+            <input type="hidden" name="account_id" value="{{ account.act_id }}">
+
+            <table>
+                <tr>
+                    <td>CUSTOMER ID :</td>
+                    <td>{{ account.ws_cust_id }}</td>
+                </tr>
+                <tr>
+                    <td>Account ID :</td>
+                    <td>{{ account.act_id }}</td>
+                </tr>
+                <tr>
+                    <td>Account Type</td>
+                    <td>
+                        {{ account.ws_acct_type }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Balance :</td>
+                    <td>{{ account.ws_acct_balance }}</td>
+                </tr>
+                <tr>
+                    <td>Withdraw Amount:</td>
+                    <td><input type="text" name="withdraw_amount" pattern="[0-9]*" autofocus=""></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Submit"></td>
+                </tr>
+            </table>
+        </form>
+    {% endif %}
+{% endblock %}

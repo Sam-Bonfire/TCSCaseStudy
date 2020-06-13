@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if account %}
+        <h2>Account Details</h2>
+        <br>
+        <form action="/" method="POST">
+            <input type="hidden" name="account_id" value="{{ account.act_id }}">
+
+            <table>
+                <tr>
+                    <td>CUSTOMER ID :</td>
+                    <td>{{ account.ws_cust_id }}</td>
+                </tr>
+                <tr>
+                    <td>Account ID :</td>
+                    <td>{{ account.act_id }}</td>
+                </tr>
+                <tr>
+                    <td>Account Type</td>
+                    <td>
+                        {{ account.ws_acct_type }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Balance :</td>
+                    <td>{{ account.ws_acct_balance }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" formaction="/cashier_deposit" value="Deposit Money">
+                    </td>
+                    <td>
+                        <input type="submit" formaction="/cashier_withdraw" value="Withdraw Money">
+                    </td>
+                    <td>
+                        <input type="submit" formaction="/cashier_transfer" value="Transfer Money">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    {% else %}
+        <form method="POST" action="/search_customer">
+            <label>
+                Account ID
+                <input type="text" name="account_id" placeholder="Account ID" autofocus="" pattern="[0-9]{9}">
+            </label>
+            <br>
+            <br>
+            <p><b>OR</b></p>
+            <br>
+            <label>
+                Customer ID
+                <input type="password" name="customer_id" placeholder="Customer ID" pattern="[0-9]{9}">
+            </label>
+            <br>
+            <button>View</button>
+        </form>
+    {% endif %}
+{% endblock %}

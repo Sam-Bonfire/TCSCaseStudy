@@ -107,21 +107,23 @@ def search_customer():
         return redirect(url_for('app.search_customer'))
 
 
-@app.route('/cashier_withdraw', methods=['POST'])
+@app.route('/cashier_withdraw', methods=['GET', 'POST'])
 @login_required
 def cashier_withdraw():
-    account_id = request.form.get('account_id')
-    account = Account.query.filter_by(act_id=account_id).first()
-    withdraw_amount = request.form.get('withdraw_amount')
-
-    if withdraw_amount:
-        if int(withdraw_amount) <= account.ws_acct_balance:
-            account.ws_acct_balance -= int(withdraw_amount)
-            db.session.commit()
-            flash('Amount Withdrawn', 'success')
-            return render_template('cashier_withdraw.html', account=account, user=current_user.type)
-        else:
-            flash('Balance Insufficient', 'error')
-            return render_template('cashier_withdraw.html', account=account, user=current_user.type)
+    if request.method == 'GET':
+        return redirect(url_for('app.search_customer'))
     else:
-        return render_template('cashier_withdraw.html', account=account, user=current_user.type)
+        account_id = request.form.get('account_id')
+        account = Account.query.filter_by(act_id=account_id).first()
+        withdraw_amount = request.form.get('withdraw_amount')
+        if withdraw_amount:
+            if int(withdraw_amount) <= account.ws_acct_balance:
+                account.ws_acct_balance -= int(withdraw_amount)
+                db.session.commit()
+                flash('Amount Withdrawn', 'success')
+                return render_template('cashier_withdraw.html', account=account, user=current_user.type)
+            else:
+                flash('Balance Insufficient', 'error')
+                return render_template('cashier_withdraw.html', account=account, user=current_user.type)
+        else:
+            return render_template('cashier_withdraw.html', account=account, user=current_user.type)

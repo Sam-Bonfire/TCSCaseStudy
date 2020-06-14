@@ -1,0 +1,44 @@
+{% extends "test2.html" %}
+{% block content %}
+
+<div>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Customer Id</th>
+        <th scope="col">Customer SSN Id</th>
+        <th scope="col">Status</th>
+        <th scope="col">Message</th>
+        <th scope="col">Last Updated</th>
+        <th scope="col">Operation</th>
+        <th scope="col">View Profile</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- sample rows for checking , delete later-->
+      <tr>
+        <td>{customer.}}</td>
+        <td>{customer.}}</td>
+        <td>{customer.}}</td>
+        <td>{customer.}}</td>
+        <td>{customer.}}</td>
+        <td><a href=#>{customer.}}</a></td>
+        <td><a href=#>{customer.}}</a></td>
+      </tr>
+      <tr>
+        {% if customer %}
+        {% for customer in customers %} 
+        <td>{customer.}}</td>
+        <td>{customer.}}</td>
+        <td>{customer.}}</td>
+        <td>{customer.}}</td>
+        <td>{customer.}}</td>
+        <td><a href=#>{customer.}}</a></td>
+        <td><a href=#>{customer.}}</a></td>
+        {% endfor %}
+        {% endif %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock content %}

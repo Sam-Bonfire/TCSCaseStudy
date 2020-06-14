@@ -11,13 +11,6 @@
 
     <style type="text/css">
       
-      .footer {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 168px; 
-                
-      }
 
       .navbar-brand{
       	margin-left: 5%;
@@ -26,26 +19,50 @@
 
       .color-custom{
       	color:#5C5F5D;
-      	background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #5FCEE1 0%, #33C6D8 100%) 
+      	background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #5FCEE1 , #33C6D8 ) 
       	repeat scroll 0 0;
     	border-radius: 4px;
     	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 1px 5px rgba(0, 0, 0, 0.075);
     	
       }
 
-      body{
-      	background-color: #F1EFF1;
-      	padding-top: 60px;
+      html,body{
+      	background-color:#E3D6E2 ;
+      	margin:0;
+   		padding:0;
+   		height:100%;
+     
       }
 
-    </style>
+      #page-container {
+
+		min-height: 100%;
+		position: relative;
+		
+	  }
+
+	  #content-wrap {
+	  	padding:10px;
+  		padding-bottom: 168px;    /* Footer height */
+	  }
+
+	  #footer {
+  		position: absolute;
+  		bottom: 0;
+  		width: 100%;
+  		height: 168px;   
+
+  		         /* Footer height */
+	  }
+
+	</style>
 
 
     <title>Retail Banking</title>
 </head>
 <body>
-	
-	<nav class="navbar navbar-expand-lg navbar-light color-custom fixed-top">
+
+	<nav class="navbar navbar-expand-lg navbar-light color-custom sticky-top">
 		<a class="navbar-brand" href="#">ABC Bank<sub class='text-muted ml-1'>A Better Companion</sub></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	    	<span class="navbar-toggler-icon"></span>
@@ -57,7 +74,7 @@
 					<a class="nav-link" href="#">Home </a>
 				</li>
 			</ul>
-				{{% if user == 'executive' %}}   
+				{% if user == 'executive' %}   
 				<ul class="navbar-nav mr-auto ">   
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -97,13 +114,13 @@
 				          Log out	
 				        </a>
 				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				          <span class="dropdown-item">Logged in as {{/ user }}<br><a class="button btn-outline-primary" href="#">Log Out</a></span>
+				          <span class="dropdown-item">Logged in as { user }}<br><a class="button btn-outline-primary" href="#">Log Out</a></span>
 				          
 				        </div>
 					</div>
 		        </div>
 
-				{{% elif user == 'cashier'%}}
+				{% elif user == 'cashier'%}
 
 					<li class="nav-item active">
 					<a class="nav-link" href="#">Account Details </a>
@@ -132,62 +149,76 @@
 				          Log out	
 				        </a>
 				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				          <span class="dropdown-item">Logged in as {{/ user }}<br><a class="button btn-outline-primary" href="#">Log Out</a></span>
+				          <span class="dropdown-item">Logged in as { user }}<br><a class="button btn-outline-primary" href="#">Log Out</a></span>
 				          
 				        </div>
 					</div>
 		        </div>
 
-				{{% endif %}}
+				{% endif %}
 
 				
 	   	</div>
 
 	</nav>
-	<div class='container'>
-		<div class="row">
-	          {% block content %}{% endblock %}
-	    </div>
+	<div id='page-container'>
+		<div class='flashwrapper'>
+        {% with messages = get_flashed_messages(with_categories=true)%}
+          {% if messages %}
+            {% for category , message in messages %}
+
+              <div id='flashwrapper'class="alert alert-{{ category }} alert-dismissible" role='alert'>
+                        {{ message }}.
+                 &nbsp&nbsp<a href=#  data-dismiss='alert' onclick="close('flashwrapper')">close</a>
+                
+              </div>
+                      
+
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </div>
+		<div id='content-wrap' class='container-fluid'>
+		    {% block content %}{% endblock %}
+		</div>
+		<footer id='footer' class="footer bg-dark">
+		    <div class="container text-center  text-white-50">
+		      	<div class='row'>
+		      		<div class='col-4'>
+		      			
+			      			<div class="pt-4">
+			    				<h5>About Us</h5>
+			    				<span>. Extensive repulsive belonging depending if promotion be zealously as.
+			    					Preference inquietude ask now are dispatched led appearance. Small meant in
+			    				</span>
+			    				
+			  				</div>
+			  			
+			  		</div>
+		      		<div class='col-4'>
+		      			
+			      			<div class="pt-4">
+			    				<h5>Services</h5>
+			    				<span >Extensive repulsive belonging depending <br> if promotion be zealously as.
+			    					<br> Preference inquietude ask now are<br> dispatched led appearance. Small meant in
+								</span>
+			    			</div>
+			  			
+			  		</div>
+		      		<div class='col-4'>
+		      			
+			      			<div class="pt-4">
+			    				<h5>Contact Us</h5>
+			    				<span>Extensive repulsive belonging depending <br> if promotion be zealously as.
+			    					<br> Preference inquietude ask now are<br> dispatched led appearance. Small meant in
+			    				</span>
+			    			</div>
+			  			
+		      		</div>
+		   		</div>
+		    </div>
+	    </footer>
 	</div>
-	 <footer class="footer bg-dark" style='flex-shrink:0;'>
-	    <div class="container text-center  text-white-50">
-	      	<div class='row'>
-	      		<div class='col-4'>
-	      			
-		      			<div class="pt-4">
-		    				<h5>About Us</h5>
-		    				<span>. Extensive repulsive belonging depending if promotion be zealously as.
-		    					Preference inquietude ask now are dispatched led appearance. Small meant in
-		    				</span>
-		    				
-		  				</div>
-		  			
-		  		</div>
-	      		<div class='col-4'>
-	      			
-		      			<div class="pt-4">
-		    				<h5>Services</h5>
-		    				<span >Extensive repulsive belonging depending <br> if promotion be zealously as.
-		    					<br> Preference inquietude ask now are<br> dispatched led appearance. Small meant in
-							</span>
-		    			</div>
-		  			
-		  		</div>
-	      		<div class='col-4'>
-	      			
-		      			<div class="pt-4">
-		    				<h5>Contact Us</h5>
-		    				<span>Extensive repulsive belonging depending <br> if promotion be zealously as.
-		    					<br> Preference inquietude ask now are<br> dispatched led appearance. Small meant in
-		    				</span>
-		    			</div>
-		  			
-	      		</div>
-	   		</div>
-	    </div>
-    </footer>
-
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

@@ -1,0 +1,3 @@
+background = #F1EFF1
+header = #33C6D8 / #5FCEE1
+text= #5C5F5D/#090707

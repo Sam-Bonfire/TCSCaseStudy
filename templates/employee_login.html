@@ -1,52 +1,52 @@
-{% extends "test2.html" %}
+{% extends "base.html" %}
 {% block content %}
     <div class="col-md-4 mx-auto pt-2 pb-2 mb-3" style=' background-color: rgba(255,255,255,0.7); border-radius: 4px;'>
         <div class="text-center justify-content-center ">
-            
-                    
-                    <form method="POST" action="">
-                        {{ form.hidden_tag() }}
-                        <fieldset class="form-group">
-                            <legend class="border-bottom mb-4">Login</legend>
-                            <div class="form-group">
-                                {{ form.username.label(class="form-control-label") }}
-                    
-                                {% if form.username.errors %}
-                                    {{ form.username(class="form-control form-control-lg is-invalid text-center") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.username.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                {% else %}
-                                    {{ form.username(class="form-control form-control-lg text-center") }}
-                                {% endif %}
+
+
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Login</legend>
+                    <div class="form-group">
+                        {{ form.username.label(class="form-control-label") }}
+
+                        {% if form.username.errors %}
+                            {{ form.username(class="form-control form-control-lg is-invalid text-center") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
                             </div>
-                            <div class="form-group">
-                                {{ form.password.label(class="form-control-label") }}
-                                {% if form.password.errors %}
-                                    {{ form.password(class="form-control form-control-lg is-invalid text-center") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in form.password.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                {% else %}
-                                    {{ form.password(class="form-control form-control-lg text-center") }}
-                                {% endif %}
+                        {% else %}
+                            {{ form.username(class="form-control form-control-lg text-center") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password.label(class="form-control-label") }}
+                        {% if form.password.errors %}
+                            {{ form.password(class="form-control form-control-lg is-invalid text-center") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
                             </div>
-                            <div class="form-check">
-                                {{ form.remember(class="form-check-input",checked=True) }}
-                                {{ form.remember.label(class="form-check-label") }}
-                            </div>
-                        </fieldset>
-                        <div class="form-group">
-                            {{ form.submit(class="btn btn-outline-info") }}
-                        </div>
-                        <small class="text-muted ml-2">
-                            <a href="#">Forgot Password?</a>
-                        </small>
-                    </form>
-        </div>   
-    </div>   
+                        {% else %}
+                            {{ form.password(class="form-control form-control-lg text-center") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-check">
+                        {{ form.remember(class="form-check-input",checked=True) }}
+                        {{ form.remember.label(class="form-check-label") }}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+                <small class="text-muted ml-2">
+                    <a href="#">Forgot Password?</a>
+                </small>
+            </form>
+        </div>
+    </div>
 {% endblock content %}

@@ -4,6 +4,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 
+from forms import AccountSearchForm, LoginForm, AccountForm
 from models import User, Customer, Account
 from app import db
 
@@ -58,11 +59,13 @@ def login():
         return redirect(url_for('app.index'))
     else:
         if request.method == 'GET':
-            return render_template('login.html')
+            login_form = LoginForm()
+            return render_template('employee_login.html', form=login_form)
         if request.method == 'POST':
-            user_login = request.form.get('login')
-            password = request.form.get('password')
-            remember = True if request.form.get('remember') else False
+            form = LoginForm(request.form)
+            user_login = form.username.data
+            password = form.password.data
+            remember = True if form.remember.data else False
 
             user = User.query.filter_by(user_login=user_login).first()
 
@@ -88,21 +91,26 @@ def logout():
 @login_required
 def search_customer():
     if request.method == 'GET':
-        return render_template('search_customer.html', user=current_user.type)
+        account_search = AccountSearchForm()
+        return render_template('account_search.html', user=current_user.type, form=account_search)
     elif request.method == 'POST':
-        account_id = request.form.get('account_id')
-        customer_id = request.form.get('customer_id')
+        account_search = AccountSearchForm(request.form)
         account = None
-        if customer_id:
-            account = Account.query.filter_by(ws_cust_id=int(customer_id)).first()
-        elif account_id:
-            account = Account.query.filter_by(act_id=int(account_id)).first()
+        if account_search.customer_id.data:
+            account = Account.query.filter_by(ws_cust_id=int(account_search.customer_id.data)).first()
+        elif account_search.account_id.data:
+            account = Account.query.filter_by(act_id=int(account_search.account_id.data)).first()
         else:
             flash('Invalid customer')
         if account:
-            return render_template('search_customer.html', account=account)
+            selected_account = AccountForm()
+            selected_account.customer_id.data = account.ws_cust_id
+            selected_account.account_id.data = account.act_id
+            selected_account.account_type.data = 'Savings' if account.ws_acct_type == 'S' else 'Current'
+            selected_account.balance.data = account.ws_acct_balance
+            return render_template('search_customer.html', form=selected_account)
         else:
-            flash('Account does not exist', 'error')
+            flash('Account does not exist', 'danger')
         flash('Please enter a value', 'warning')
         return redirect(url_for('app.search_customer'))
 
@@ -114,8 +122,8 @@ def cashier_withdraw():
         return redirect(url_for('app.search_customer'))
     else:
         account_id = request.form.get('account_id')
-        account = Account.query.filter_by(act_id=account_id).first()
         withdraw_amount = request.form.get('withdraw_amount')
+        account = Account.query.filter_by(act_id=account_id).first()
         if withdraw_amount:
             if int(withdraw_amount) <= account.ws_acct_balance:
                 account.ws_acct_balance -= int(withdraw_amount)
@@ -123,7 +131,7 @@ def cashier_withdraw():
                 flash('Amount Withdrawn', 'success')
                 return render_template('cashier_withdraw.html', account=account, user=current_user.type)
             else:
-                flash('Balance Insufficient', 'error')
+                flash('Balance Insufficient', 'danger')
                 return render_template('cashier_withdraw.html', account=account, user=current_user.type)
         else:
             return render_template('cashier_withdraw.html', account=account, user=current_user.type)

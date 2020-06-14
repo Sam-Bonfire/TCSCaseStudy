@@ -12,21 +12,47 @@
 
     <style type="text/css">
 
-        .footer {
+
+        .navbar-brand {
+            margin-left: 5%;
+
+        }
+
+        .color-custom {
+            color: #5C5F5D;
+            background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #5FCEE1, #33C6D8) repeat scroll 0 0;
+            border-radius: 4px;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 1px 5px rgba(0, 0, 0, 0.075);
+
+        }
+
+        html, body {
+            background-color: #E3D6E2;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+
+        }
+
+        #page-container {
+
+            min-height: 100%;
+            position: relative;
+
+        }
+
+        #content-wrap {
+            padding: 10px;
+            padding-bottom: 168px; /* Footer height */
+        }
+
+        #footer {
             position: absolute;
             bottom: 0;
             width: 100%;
             height: 168px;
 
-        }
-
-        .color-custom {
-            background-color: #33C6D8;
-            color: #5C5F5D;
-        }
-
-        body {
-            background-color: #F1EFF1;
+            /* Footer height */
         }
 
     </style>
@@ -35,57 +61,181 @@
     <title>Retail Banking</title>
 </head>
 <body>
-<header class='site-header'>
-    <nav class="navbar color-custom">
-        <div class='navbar-brand'>
-            <span id='bank-name'>ABC Bank</span>
-            <small class='text-muted'> A Better Companion</small>
-        </div>
-    </nav>
-</header>
-<div class='container'>
-    <div class="row">
+
+<nav class="navbar navbar-expand-lg navbar-light color-custom sticky-top">
+    <a class="navbar-brand" href="#">ABC Bank<sub class='text-muted ml-1'>A Better Companion</sub></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto ">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home </a>
+            </li>
+        </ul>
+        {% if user == 'executive' %}
+            <ul class="navbar-nav mr-auto ">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Customer Managment
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item button btn-outline-success" href="#">Create Customer</a>
+                        <a class="dropdown-item" href="#">Update Customer</a>
+                        <a class="dropdown-item" href="#">Delete Customer</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Account Managment
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Create Account</a>
+                        <a class="dropdown-item" href="#">Delete Account</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Status Detail
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Customer Status</a>
+                        <a class="dropdown-item" href="#">Account Status</a>
+                    </div>
+                </li>
+            </ul>
+
+            <div class='navbar-nav mr-auto'>
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Log out
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <span class="dropdown-item">Logged in as {{ user }}<br><a class="button btn-outline-primary"
+                                                                                 href="/logout">Log Out</a></span>
+
+                    </div>
+                </div>
+            </div>
+
+        {% elif user == 'cashier' %}
+
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Account Details </a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Account Statement </a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Account Operation
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Withdraw</a>
+                    <a class="dropdown-item" href="#">Deposite</a>
+                    <a class="dropdown-item" href="#">Transfer</a>
+                </div>
+            </li>
+
+            </ul>
+
+            <div class='navbar-nav mr-auto'>
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Log out
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <span class="dropdown-item">Logged in as { user }}<br><a class="button btn-outline-primary"
+                                                                                 href="#">Log Out</a></span>
+
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
+
+
+    </div>
+
+</nav>
+<div id='page-container'>
+    <div class='flashwrapper'>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category , message in messages %}
+
+                    <div id='flashwrapper' class="alert alert-{{ category }} alert-dismissible" role='alert'>
+                        {{ message }}.
+                        &nbsp&nbsp<a href=# data-dismiss='alert' onclick="close('flashwrapper')">close</a>
+
+                    </div>
+
+
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <div id='content-wrap' class='container-fluid'>
         {% block content %}{% endblock %}
     </div>
-</div>
-<footer class="footer bg-secondary" style='flex-shrink:0;'>
-    <div class="container text-center  text-white-50">
-        <div class='row'>
-            <div class='col-4'>
+    <footer id='footer' class="footer bg-dark">
+        <div class="container text-center  text-white-50">
+            <div class='row'>
+                <div class='col-4'>
 
-                <div class="pt-4">
-                    <h5>About Us</h5>
-                    <span>. Extensive repulsive belonging depending if promotion be zealously as.
-		    					Preference inquietude ask now are dispatched led appearance. Small meant in
-		    				</span>
+                    <div class="pt-4">
+                        <h5>About Us</h5>
+                        <span>. Extensive repulsive belonging depending if promotion be zealously as.
+			    					Preference inquietude ask now are dispatched led appearance. Small meant in
+			    				</span>
+
+                    </div>
 
                 </div>
+                <div class='col-4'>
 
-            </div>
-            <div class='col-4'>
+                    <div class="pt-4">
+                        <h5>Services</h5>
+                        <span>Extensive repulsive belonging depending <br> if promotion be zealously as.
+			    					<br> Preference inquietude ask now are<br> dispatched led appearance. Small meant in
+								</span>
+                    </div>
 
-                <div class="pt-4">
-                    <h5>Services</h5>
-                    <span>Extensive repulsive belonging depending <br> if promotion be zealously as.
-		    					<br> Preference inquietude ask now are<br> dispatched led appearance. Small meant in
-							</span>
                 </div>
+                <div class='col-4'>
 
-            </div>
-            <div class='col-4'>
+                    <div class="pt-4">
+                        <h5>Contact Us</h5>
+                        <span>Extensive repulsive belonging depending <br> if promotion be zealously as.
+			    					<br> Preference inquietude ask now are<br> dispatched led appearance. Small meant in
+			    				</span>
+                    </div>
 
-                <div class="pt-4">
-                    <h5>Contact Us</h5>
-                    <span>Extensive repulsive belonging depending <br> if promotion be zealously as.
-		    					<br> Preference inquietude ask now are<br> dispatched led appearance. Small meant in
-		    				</span>
                 </div>
-
             </div>
         </div>
-    </div>
-</footer>
-
-
+    </footer>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 </html>

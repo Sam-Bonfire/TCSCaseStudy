@@ -13,7 +13,7 @@ app = Blueprint('app', __name__)
 @app.route("/")
 @app.route("/home")
 def index():
-    if current_user:
+    if current_user.is_authenticated:
         return render_template("base.html", index=True, user=current_user.type)
     else:
         return render_template("base.html", index=True)
@@ -53,9 +53,9 @@ def signup():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    if current_user:
+    if current_user.is_authenticated:
         flash('User already logged in', 'success')
-        return redirect(url_for('app.ind'))
+        return redirect(url_for('app.index'))
     else:
         if request.method == 'GET':
             return render_template('login.html')
@@ -74,7 +74,7 @@ def login():
             db.session.commit()
             login_user(user, remember=remember)
             flash('User logged in', 'success')
-            return redirect(url_for('app.ind'))
+            return redirect(url_for('app.index'))
 
 
 @app.route('/logout')

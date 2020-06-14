@@ -4,7 +4,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 
-from forms import AccountSearchForm, LoginForm, AccountForm
+from forms import AccountSearchForm, LoginForm, AccountForm, WithdrawMoneyForm, DepositMoneyForm
 from models import User, Customer, Account
 from app import db
 
@@ -121,17 +121,37 @@ def cashier_withdraw():
     if request.method == 'GET':
         return redirect(url_for('app.search_customer'))
     else:
-        account_id = request.form.get('account_id')
-        withdraw_amount = request.form.get('withdraw_amount')
-        account = Account.query.filter_by(act_id=account_id).first()
-        if withdraw_amount:
+        selected_account = WithdrawMoneyForm(request.form)
+        account = Account.query.filter_by(act_id=selected_account.account_id.data).first()
+        if withdraw_amount := selected_account.withdraw_amount.data:
             if int(withdraw_amount) <= account.ws_acct_balance:
                 account.ws_acct_balance -= int(withdraw_amount)
                 db.session.commit()
+                selected_account.balance.data = account.ws_acct_balance
+                selected_account.withdraw_amount.data = ''
                 flash('Amount Withdrawn', 'success')
-                return render_template('cashier_withdraw.html', account=account, user=current_user.type)
+                return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
             else:
                 flash('Balance Insufficient', 'danger')
-                return render_template('cashier_withdraw.html', account=account, user=current_user.type)
+                return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
         else:
-            return render_template('cashier_withdraw.html', account=account, user=current_user.type)
+            return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
+
+
+@app.route('/cashier_deposit', methods=['GET', 'POST'])
+@login_required
+def cashier_deposit():
+    if request.method == 'GET':
+        return redirect(url_for('app.search_customer'))
+    else:
+        selected_account = DepositMoneyForm(request.form)
+        account = Account.query.filter_by(act_id=selected_account.account_id.data).first()
+        if deposit_amount := selected_account.deposit_amount.data:
+            account.ws_acct_balance += int(deposit_amount)
+            db.session.commit()
+            selected_account.balance.data = account.ws_acct_balance
+            selected_account.deposit_amount.data = ''
+            flash('Amount Deposited', 'success')
+            return render_template('deposit_money.html', form=selected_account, user=current_user.type)
+
+        return render_template('deposit_money.html', form=selected_account, user=current_user.type)

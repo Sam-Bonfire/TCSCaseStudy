@@ -7,7 +7,7 @@
             <form method="POST" action="">
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Withdraw Money</legend>
+                    <legend class="border-bottom mb-4">Deposit Money</legend>
                     <div class="form-group">
                         {{ form.customer_id.label(class="form-control-label") }}
 
@@ -35,16 +35,16 @@
 
                     </div>
                     <div class="form-group">
-                        {{ form.withdraw_amount.label(class="form-control-label") }}
-                        {% if form.withdraw_amount.errors %}
-                            {{ form.withdraw_amount(class="form-control form-control-lg is-invalid text-center") }}
+                        {{ form.deposit_amount.label(class="form-control-label") }}
+                        {% if form.deposit_amount.errors %}
+                            {{ form.deposit_amount(class="form-control form-control-lg is-invalid text-center") }}
                             <div class="invalid-feedback">
-                                {% for error in form.withdraw_amount.errors %}
+                                {% for error in form.deposit_amount.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.withdraw_amount(class="form-control form-control-lg text-center") }}
+                            {{ form.deposit_amount(class="form-control form-control-lg text-center") }}
                         {% endif %}
                     </div>
 

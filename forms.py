@@ -87,7 +87,7 @@ class DepositMoneyForm(FlaskForm):
     account_type = StringField('Account Type', validators=[DataRequired(), Length(min=6)])
 
     balance = IntegerField('Balance', validators=[DataRequired()])
-    deposit_Amount = IntegerField('Deposit Amount', validators=[DataRequired()])
+    deposit_amount = IntegerField('Deposit Amount', validators=[DataRequired()])
     submit = SubmitField('Deposit Amount')
 
 
@@ -113,7 +113,7 @@ class WithdrawMoneyForm(FlaskForm):
 
     balance = StringField('Balance', validators=[DataRequired(), Length(min=6)])
 
-    withdraw_Amount = IntegerField('Withdraw Amount', validators=[DataRequired()])
+    withdraw_amount = IntegerField('Withdraw Amount', validators=[DataRequired()])
     submit = SubmitField('Withdraw Amount')
 
 

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create User</title>
+
+</head>
+<body>
+     {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div>
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+     {% endwith %}
+
+  <form action = "create_user_validate" method = "post" name="myForm" onsubmit="return validateForm()">
+      <h2>&nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp  &nbsp  &nbsp &nbsp Add Account  In Bank</h2>
+      <table border = "0" align="center"  width = "800">
+
+          <tr>
+              <td><p>SSN Id:</p></td>
+              <td><input type = "number" name = "id" /></td>
+          </tr>
+
+          <tr>
+              <td><p>Customer Name:</p></td>
+              <td><input type = "text" name = "name" /></td>
+          </tr>
+
+          <tr>
+              <td><p>Age:</p></td>
+              <td><input type="Age"  name="age"></td>
+          </tr>
+
+
+          <tr>
+              <td><p>Address:</p></td>
+              <td><textarea rows = "5" cols = "50" name = "address">Enter address here...</textarea></td>
+
+          </tr>
+
+
+          <tr>
+              <td><p>State:</p></td>
+              <td>
+                <select name="state" >
+                  <option value="Gujarat">Akola</option>
+
+                </select>
+              </td>
+          </tr>
+
+          <tr>
+              <td><p>City:</p></td>
+              <td>
+                <select name="city" >
+                  <option value="Akola">Akola</option>
+                  <option value="warerdha">Wardha</option>
+                </select>
+              </td>
+          </tr>
+
+         <tr>
+             <td></td>
+             <td><input type = "submit" value = "Add Account" /></p></td>
+         </tr>
+
+
+      </table>
+  </form>
+
+
+</body>
+</html>

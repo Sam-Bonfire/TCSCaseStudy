@@ -7,6 +7,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from forms import AccountSearchForm, LoginForm, AccountForm, WithdrawMoneyForm, DepositMoneyForm
 from models import User, Customer, Account
 from app import db
+from random import randint
 
 app = Blueprint('app', __name__)
 
@@ -115,43 +116,121 @@ def search_customer():
         return redirect(url_for('app.search_customer'))
 
 
-@app.route('/cashier_withdraw', methods=['GET', 'POST'])
-@login_required
-def cashier_withdraw():
-    if request.method == 'GET':
-        return redirect(url_for('app.search_customer'))
-    else:
-        selected_account = WithdrawMoneyForm(request.form)
-        account = Account.query.filter_by(act_id=selected_account.account_id.data).first()
-        if withdraw_amount := selected_account.withdraw_amount.data:
-            if int(withdraw_amount) <= account.ws_acct_balance:
-                account.ws_acct_balance -= int(withdraw_amount)
-                db.session.commit()
-                selected_account.balance.data = account.ws_acct_balance
-                selected_account.withdraw_amount.data = ''
-                flash('Amount Withdrawn', 'success')
-                return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
-            else:
-                flash('Balance Insufficient', 'danger')
-                return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
-        else:
-            return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
+# @app.route('/cashier_withdraw', methods=['GET', 'POST'])
+# @login_required
+# def cashier_withdraw():
+#     if request.method == 'GET':
+#         return redirect(url_for('app.search_customer'))
+#     else:
+#         selected_account = WithdrawMoneyForm(request.form)
+#         account = Account.query.filter_by(act_id=selected_account.account_id.data).first()
+#         if withdraw_amount := selected_account.withdraw_amount.data:
+#             if int(withdraw_amount) <= account.ws_acct_balance:
+#                 account.ws_acct_balance -= int(withdraw_amount)
+#                 db.session.commit()
+#                 selected_account.balance.data = account.ws_acct_balance
+#                 selected_account.withdraw_amount.data = ''
+#                 flash('Amount Withdrawn', 'success')
+#                 return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
+#             else:
+#                 flash('Balance Insufficient', 'danger')
+#                 return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
+#         else:
+#             return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
 
 
-@app.route('/cashier_deposit', methods=['GET', 'POST'])
-@login_required
-def cashier_deposit():
-    if request.method == 'GET':
-        return redirect(url_for('app.search_customer'))
-    else:
-        selected_account = DepositMoneyForm(request.form)
-        account = Account.query.filter_by(act_id=selected_account.account_id.data).first()
-        if deposit_amount := selected_account.deposit_amount.data:
-            account.ws_acct_balance += int(deposit_amount)
+# @app.route('/cashier_deposit', methods=['GET', 'POST'])
+# @login_required
+# def cashier_deposit():
+#     if request.method == 'GET':
+#         return redirect(url_for('app.search_customer'))
+#     else:
+#         selected_account = DepositMoneyForm(request.form)
+#         account = Account.query.filter_by(act_id=selected_account.account_id.data).first()
+#         if deposit_amount := selected_account.deposit_amount.data:
+#             account.ws_acct_balance += int(deposit_amount)
+#             db.session.commit()
+#             selected_account.balance.data = account.ws_acct_balance
+#             selected_account.deposit_amount.data = ''
+#             flash('Amount Deposited', 'success')
+#             return render_template('deposit_money.html', form=selected_account, user=current_user.type)
+#
+#         return render_template('deposit_money.html', form=selected_account, user=current_user.type)
+
+@app.route("/create_user")
+def create_user():
+    return render_template("create_user.html")
+
+
+def randome_customer_id():
+    return randint(100000000, 999999999)
+
+@app.route("/create_user_validate",methods=['GET', 'POST'])
+def create_user_validate():
+
+    try:
+        if request.method == 'POST':
+            id = request.form.get('id')
+            name = request.form.get('name')
+            age = request.form.get('age')
+            address = request.form.get('address')
+            state = request.form.get('state')
+            city = request.form.get('city')
+            address=address+" "+" "+state+" "+" "+city
+            customer_id = Customer.query.order_by(Customer.ws_cust_id).all()
+            customer_id = [i.ws_cust_id for i in customer_id[:]]
+
+            while True:
+                temp_cust_id=randome_customer_id()
+                if randome_customer_id() not in customer_id:
+                    break
+            print(customer_id)
+            customer=Customer(ws_ssn=int(id),ws_cust_id=temp_cust_id,ws_name=name,ws_adrs=address,ws_age=int(age))
+            db.session.query()
+            db.session.add(customer)
             db.session.commit()
-            selected_account.balance.data = account.ws_acct_balance
-            selected_account.deposit_amount.data = ''
-            flash('Amount Deposited', 'success')
-            return render_template('deposit_money.html', form=selected_account, user=current_user.type)
+            #print(Customer.query.get(1))
 
-        return render_template('deposit_money.html', form=selected_account, user=current_user.type)
+            flash('Create User Sucessfull')
+    except Exception as e:
+        print(e)
+        flash('User Alredy Exists')
+    return render_template("create_user.html")
+
+
+
+@app.route("/delete_customer")
+def delete_customer():
+    return render_template('delete_customer.html')
+
+@app.route("/delete_customer_validation",methods=['GET', 'POST'])
+def delete_customer_validation():
+    if request.method == 'POST':
+        id = request.form.get('id')
+        cid = request.form.get('cid')
+        name = request.form.get('name')
+        age = request.form.get('age')
+        address = request.form.get('address')
+
+        data = Customer.query.filter_by(ws_ssn=id).first()
+        if data.ws_ssn == int(id):
+            if data.ws_cust_id==int(cid):
+                if data.ws_name==name:
+                    if data.ws_age == int(age):
+                        if data.ws_adrs==address:
+                            Customer.query.filter_by(ws_ssn=id).delete()
+                            db.session.commit()
+                            flash("Customer Delete Sucessfully")
+                        else:
+                            flash("Address Is Incorrect")
+                    else:
+                        flash("Age Is Incorrect")
+                else:
+                    flash("Name Not Found")
+            else:
+                flash("Customer Id Not Found")
+        else:
+            flash("Id Not Found")
+
+        return render_template('delete_customer_temp.html')
+

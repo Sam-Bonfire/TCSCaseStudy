@@ -26,7 +26,7 @@ class Customer(db.Model):
 
 
 class Account(db.Model):
-    act_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    act_id = db.Column(db.Integer, primary_key=True,)
     ws_cust_id = db.Column(db.Integer)
     ws_acct_type = db.Column(db.String(1))
     ws_acct_balance = db.Column(db.Integer)
@@ -36,8 +36,9 @@ class Account(db.Model):
 
 
 class Transaction(db.Model):
-    trxn_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    trxn_id = db.Column(db.Integer, primary_key=True)
     ws_cust_id = db.Column(db.Integer)
+    ws_trxn_type = db.Column(db.String(1))
     ws_acct_type = db.Column(db.String(1))
     ws_amt = db.Column(db.Integer)
     ws_trxn_date = db.Column(db.Date)

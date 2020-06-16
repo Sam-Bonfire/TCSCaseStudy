@@ -1,11 +1,13 @@
 from datetime import datetime
 
 from flask_login import login_user, login_required, current_user, logout_user
+from sqlalchemy import and_
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 
-from forms import AccountSearchForm, LoginForm, AccountForm, WithdrawMoneyForm, DepositMoneyForm, TransferMoneyForm
-from models import User, Customer, Account
+from forms import AccountSearchForm, LoginForm, AccountForm, WithdrawMoneyForm, DepositMoneyForm, TransferMoneyForm, \
+    GetAccountStatementForm
+from models import User, Customer, Account, Transaction
 from app import db
 from random import randint
 
@@ -127,6 +129,14 @@ def cashier_withdraw():
         if withdraw_amount := selected_account.withdraw_amount.data:
             if int(withdraw_amount) <= account.ws_acct_balance:
                 account.ws_acct_balance -= int(withdraw_amount)
+                transaction = Transaction(ws_cust_id=account.ws_cust_id,
+                                          ws_acct_type=account.ws_acct_type,
+                                          ws_amt=withdraw_amount,
+                                          ws_trxn_date=datetime.now(),
+                                          ws_src_typ=account.ws_acct_type,
+                                          ws_tgt_typ=account.ws_acct_type,
+                                          ws_trxn_type='W')
+                db.session.add(transaction)
                 db.session.commit()
                 selected_account.balance.data = account.ws_acct_balance
                 selected_account.withdraw_amount.data = ''
@@ -149,6 +159,14 @@ def cashier_deposit():
         account = Account.query.filter_by(act_id=selected_account.account_id.data).first()
         if deposit_amount := selected_account.deposit_amount.data:
             account.ws_acct_balance += int(deposit_amount)
+            transaction = Transaction(ws_cust_id=account.ws_cust_id,
+                                      ws_acct_type=account.ws_acct_type,
+                                      ws_amt=deposit_amount,
+                                      ws_trxn_date=datetime.now(),
+                                      ws_src_typ=account.ws_acct_type,
+                                      ws_tgt_typ=account.ws_acct_type,
+                                      ws_trxn_type='D')
+            db.session.add(transaction)
             db.session.commit()
             selected_account.balance.data = account.ws_acct_balance
             selected_account.deposit_amount.data = ''
@@ -176,6 +194,14 @@ def cashier_transfer():
                         if int(withdraw_amount) <= source_account.ws_acct_balance:
                             source_account.ws_acct_balance -= int(withdraw_amount)
                             target_account.ws_acct_balance += int(withdraw_amount)
+                            transaction = Transaction(ws_cust_id=source_account.ws_cust_id,
+                                                      ws_acct_type=source_account.ws_acct_type,
+                                                      ws_amt=withdraw_amount,
+                                                      ws_trxn_date=datetime.now(),
+                                                      ws_src_typ=source_account.ws_acct_type,
+                                                      ws_tgt_typ=target_account.ws_acct_type,
+                                                      ws_trxn_type='T')
+                            db.session.add(transaction)
                             db.session.commit()
                             flash('Amount Withdrawn and Deposited Successfully', 'success')
                         else:
@@ -265,3 +291,20 @@ def delete_customer_validation():
             flash("Id Not Found")
 
         return render_template('delete_customer_temp.html')
+
+
+@app.route("/account_statement", methods=['GET', 'POST'])
+def account_statement():
+    if request.method == 'GET':
+        form = GetAccountStatementForm()
+        return render_template('account_statement.html', form=form)
+    elif request.method == 'POST':
+        form = GetAccountStatementForm(request.form)
+        account = Account.query.filter_by(act_id=form.account_id.data).first()
+        # transactions = Transaction.query.filter_by(ws_cust_id=account.ws_cust_id).all()
+        transactions = Transaction.query.filter(and_(Transaction.ws_cust_id == account.ws_cust_id,
+                                                     Transaction.ws_trxn_date.between(form.start_date.data,
+                                                                                      form.end_date.data))).all()
+        print(transactions)
+        return render_template('account_statement.html', account_statement=transactions, form=form,
+                               user=current_user.user_login)

@@ -10,6 +10,8 @@ from forms import AccountSearchForm, LoginForm, AccountForm, WithdrawMoneyForm, 
 from models import User, Customer, Account, Transaction
 from app import db
 from random import randint
+import os
+import json
 
 app = Blueprint('app', __name__)
 
@@ -308,3 +310,15 @@ def account_statement():
         print(transactions)
         return render_template('account_statement.html', account_statement=transactions, form=form,
                                user=current_user.user_login)
+
+
+@app.route('/<string:state>')
+def getCity(state):
+    city = []
+    if os.path.exists('cities.json'):
+        with open('cities.json') as url_file:
+            urls = json.load(url_file)
+            for i in urls:
+                if str(i['state']).lower() == "Maharashtra".lower():
+                    city.append(i["name"])
+    return  str(city)

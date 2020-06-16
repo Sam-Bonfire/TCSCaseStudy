@@ -8,6 +8,8 @@ from forms import AccountSearchForm, LoginForm, AccountForm, WithdrawMoneyForm, 
 from models import User, Customer, Account
 from app import db
 from random import randint
+import os
+import json
 
 app = Blueprint('app', __name__)
 
@@ -114,80 +116,85 @@ def search_customer():
             flash('Account does not exist', 'danger')
         flash('Please enter a value', 'warning')
         return redirect(url_for('app.search_customer'))
+#
+#
+# @app.route('/cashier_withdraw', methods=['GET', 'POST'])
+# @login_required
+# def cashier_withdraw():
+#     if request.method == 'GET':
+#         return redirect(url_for('app.search_customer'))
+#     else:
+#         selected_account = WithdrawMoneyForm(request.form)
+#         account = Account.query.filter_by(act_id=selected_account.account_id.data).first()
+#         if withdraw_amount := selected_account.withdraw_amount.data:
+#             if int(withdraw_amount) <= account.ws_acct_balance:
+#                 account.ws_acct_balance -= int(withdraw_amount)
+#                 db.session.commit()
+#                 selected_account.balance.data = account.ws_acct_balance
+#                 selected_account.withdraw_amount.data = ''
+#                 flash('Amount Withdrawn', 'success')
+#                 return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
+#             else:
+#                 flash('Balance Insufficient', 'danger')
+#                 return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
+#         else:
+#             return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
+#
+#
+# @app.route('/cashier_deposit', methods=['GET', 'POST'])
+# @login_required
+# def cashier_deposit():
+#     if request.method == 'GET':
+#         return redirect(url_for('app.search_customer'))
+#     else:
+#         selected_account = DepositMoneyForm(request.form)
+#         account = Account.query.filter_by(act_id=selected_account.account_id.data).first()
+#         if deposit_amount := selected_account.deposit_amount.data:
+#             account.ws_acct_balance += int(deposit_amount)
+#             db.session.commit()
+#             selected_account.balance.data = account.ws_acct_balance
+#             selected_account.deposit_amount.data = ''
+#             flash('Amount Deposited', 'success')
+#             return render_template('deposit_money.html', form=selected_account, user=current_user.type)
+#
+#         return render_template('deposit_money.html', form=selected_account, user=current_user.type)
+#
+#
+# @app.route('/cashier_transfer', methods=['GET', 'POST'])
+# @login_required
+# def cashier_transfer():
+#     if request.method == 'GET':
+#         return redirect(url_for('app.search_customer'))
+#     else:
+#         transaction_details = TransferMoneyForm(request.form)
+#         source_account = Account.query.filter_by(act_id=transaction_details.source_account_id.data).first()
+#         target_account = Account.query.filter_by(act_id=transaction_details.target_account_id.data).first()
+#         if withdraw_amount := transaction_details.transfer_Amount.data:
+#             if target_account:
+#                 if source_account.ws_acct_type == (
+#                         'S' if transaction_details.source_account_type.data == 'Savings Account' else 'C'):
+#                     if target_account.ws_acct_type == (
+#                             'S' if transaction_details.target_account_type.data == 'Savings Account' else 'C'):
+#                         if int(withdraw_amount) <= source_account.ws_acct_balance:
+#                             source_account.ws_acct_balance -= int(withdraw_amount)
+#                             target_account.ws_acct_balance += int(withdraw_amount)
+#                             db.session.commit()
+#                             flash('Amount Withdrawn and Deposited Successfully', 'success')
+#                         else:
+#                             flash('Balance Insufficient', 'danger')
+#                     else:
+#                         flash('Please check the target account type', 'error')
+#                 else:
+#                     flash('Please check the source account type', 'error')
+#             else:
+#                 flash('Please check the target account details', 'error')
+#         return render_template('transfer_money.html', form=transaction_details, user=current_user.type)
+#
 
 
-@app.route('/cashier_withdraw', methods=['GET', 'POST'])
-@login_required
-def cashier_withdraw():
-    if request.method == 'GET':
-        return redirect(url_for('app.search_customer'))
-    else:
-        selected_account = WithdrawMoneyForm(request.form)
-        account = Account.query.filter_by(act_id=selected_account.account_id.data).first()
-        if withdraw_amount := selected_account.withdraw_amount.data:
-            if int(withdraw_amount) <= account.ws_acct_balance:
-                account.ws_acct_balance -= int(withdraw_amount)
-                db.session.commit()
-                selected_account.balance.data = account.ws_acct_balance
-                selected_account.withdraw_amount.data = ''
-                flash('Amount Withdrawn', 'success')
-                return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
-            else:
-                flash('Balance Insufficient', 'danger')
-                return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
-        else:
-            return render_template('withdraw_money.html', form=selected_account, user=current_user.type)
-
-
-@app.route('/cashier_deposit', methods=['GET', 'POST'])
-@login_required
-def cashier_deposit():
-    if request.method == 'GET':
-        return redirect(url_for('app.search_customer'))
-    else:
-        selected_account = DepositMoneyForm(request.form)
-        account = Account.query.filter_by(act_id=selected_account.account_id.data).first()
-        if deposit_amount := selected_account.deposit_amount.data:
-            account.ws_acct_balance += int(deposit_amount)
-            db.session.commit()
-            selected_account.balance.data = account.ws_acct_balance
-            selected_account.deposit_amount.data = ''
-            flash('Amount Deposited', 'success')
-            return render_template('deposit_money.html', form=selected_account, user=current_user.type)
-
-        return render_template('deposit_money.html', form=selected_account, user=current_user.type)
-
-
-@app.route('/cashier_transfer', methods=['GET', 'POST'])
-@login_required
-def cashier_transfer():
-    if request.method == 'GET':
-        return redirect(url_for('app.search_customer'))
-    else:
-        transaction_details = TransferMoneyForm(request.form)
-        source_account = Account.query.filter_by(act_id=transaction_details.source_account_id.data).first()
-        target_account = Account.query.filter_by(act_id=transaction_details.target_account_id.data).first()
-        if withdraw_amount := transaction_details.transfer_Amount.data:
-            if target_account:
-                if source_account.ws_acct_type == (
-                        'S' if transaction_details.source_account_type.data == 'Savings Account' else 'C'):
-                    if target_account.ws_acct_type == (
-                            'S' if transaction_details.target_account_type.data == 'Savings Account' else 'C'):
-                        if int(withdraw_amount) <= source_account.ws_acct_balance:
-                            source_account.ws_acct_balance -= int(withdraw_amount)
-                            target_account.ws_acct_balance += int(withdraw_amount)
-                            db.session.commit()
-                            flash('Amount Withdrawn and Deposited Successfully', 'success')
-                        else:
-                            flash('Balance Insufficient', 'danger')
-                    else:
-                        flash('Please check the target account type', 'error')
-                else:
-                    flash('Please check the source account type', 'error')
-            else:
-                flash('Please check the target account details', 'error')
-        return render_template('transfer_money.html', form=transaction_details, user=current_user.type)
-
+# @app.route("/temp1")
+# def create_user():
+#     return render_template("delete_customer.html")
 
 @app.route("/create_user")
 def create_user():
@@ -265,3 +272,15 @@ def delete_customer_validation():
             flash("Id Not Found")
 
         return render_template('delete_customer_temp.html')
+
+
+@app.route('/<string:state>')
+def getCity(state):
+    city = []
+    if os.path.exists('cities.json'):
+        with open('cities.json') as url_file:
+            urls = json.load(url_file)
+            for i in urls:
+                if str(i['state']).lower() == "Maharashtra".lower():
+                    city.append(i["name"])
+    return  str(city)

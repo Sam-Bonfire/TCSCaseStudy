@@ -157,7 +157,7 @@
 		      		</li>
 
 		      		<li class="nav-item dropdown">
-				        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				        <a class="nav-link dropdown-toggle {% if request.endpoint in ['create_account','delete_account']%} active {% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				          Account Managment	
 				        </a>
 				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -167,7 +167,7 @@
 					</li>
 		    
 		      		<li class="nav-item dropdown">
-				        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				        <a class="nav-link dropdown-toggle {% if request.endpoint in ['customer_status','account_status']%} active {% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				          Status Detail	
 				        </a>
 				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -180,7 +180,7 @@
 				<div class='navbar-nav'>
 		        	<div class="nav-item dropdown">
 				        <a class="nav-link dropdown-toggle" href="{url_for('create_customer')}}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				          Log out	
+				          Logout	
 				        </a>
 				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				          <span class="dropdown-item">Logged in as { user }}<br><a class="button btn-outline-primary" href="{url_for('create_customer')}}">Log Out</a></span>
@@ -191,16 +191,16 @@
 
 				{% elif user == 'cashier'%}
 
-					<li class="nav-item active">
-					<a class="nav-link" href="{url_for('create_customer')}}">Account Details </a>
+					<li class="nav-item">
+					<a class="nav-link {% if request.endpoint == 'account_details'%} active {% endif %}" href="{url_for('create_customer')}}">Account Details </a>
 					</li>
 
 		      		<li class="nav-item active">
-					<a class="nav-link" href="{url_for('create_customer')}}">Account Statement </a>
+					<a class="nav-link  {% if request.endpoint == 'create_account'%} active {% endif %}" href="{url_for('create_customer')}}">Account Statement </a>
 					</li>
 		    
 		      		<li class="nav-item dropdown">
-				        <a class="nav-link dropdown-toggle" href="{{url_for('create_customer')}}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				        <a class="nav-link dropdown-toggle {% if request.endpoint in ['withdraw_money','deposite_money','transfer_money']%} active {% endif %}" href="{{url_for('create_customer')}}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				          Account Operation	
 				        </a>
 				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">

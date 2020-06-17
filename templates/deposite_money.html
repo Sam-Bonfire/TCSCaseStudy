@@ -1,14 +1,14 @@
 {% extends "base2.html" %}
 {% block content %}
-    <div class="col-md-4 mx-auto pt-2 pb-2 mb-3 form_wrapper">
+    <div class="col-md-4 mx-auto pt-2 pb-2 mb-3" style=' background-color: rgba(255,255,255,0.7); border-radius: 4px;'>
         <div class="text-center justify-content-center ">
             
                     
                     <form method="POST" action="">
                         {{ form.hidden_tag() }}
                         <fieldset class="form-group">
-                            <legend class="border-bottom mb-4">Account Search</legend>
-                            <div class="form-group">
+                            <legend class="border-bottom mb-4">Deposite Money</legend>
+                           <div class="form-group">
                                 {{ form.account_id.label(class="form-control-label") }}
                                 {% if form.account_id.errors %}
                                     {{ form.account_id(class="form-control custom-input form-control-lg is-invalid text-center") }}
@@ -18,24 +18,20 @@
                                             {% endfor %}
                                         </div>
                                 {% else %}
-                                    {{ form.account_id(class="form-control  custom-input  form-control-lg text-center") }}
+                                    {{ form.account_id(class="form-control custom-input form-control-lg text-center") }}
                                 {% endif %}
                             </div>
                             <div class="form-group">
-                                <span>OR</span>
-                            </div>
-                            <div class="form-group">
-                                {{ form.customer_id.label(class="form-control-label") }}
-                    
-                                {% if form.customer_id.errors %}
-                                    {{ form.customer_id(class="form-control custom-input  form-control-lg is-invalid text-center") }}
+                                {{ form.deposite_Amount.label(class="form-control-label") }}
+                                {% if form.deposite_Amount.errors %}
+                                    {{ form.deposite_Amount(class="form-control custom-input form-control-lg is-invalid text-center") }}
                                         <div class="invalid-feedback">
-                                            {% for error in form.customer_id.errors %}
+                                            {% for error in form.deposite_Amount.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                 {% else %}
-                                    {{ form.customer_id(class="form-control  custom-input form-control-lg text-center") }}
+                                    {{ form.deposite_Amount(class="form-control custom-input form-control-lg text-center") }}
                                 {% endif %}
                             </div>
                             

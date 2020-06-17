@@ -44,3 +44,9 @@ class Transaction(db.Model):
     ws_trxn_date = db.Column(db.Date)
     ws_src_typ = db.Column(db.String(1))
     ws_tgt_typ = db.Column(db.String(1))
+
+class Cities(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    city = db.Column(db.String(1))
+    state = db.Column(db.String(1))
+

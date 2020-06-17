@@ -1,83 +1,83 @@
 {% extends "base2.html" %}
 {% block content %}
-    <div class="col-md-4 mx-auto pt-2 pb-2 mb-3" style=' background-color: rgba(255,255,255,0.7); border-radius: 4px;'>
+    <div class="col-md-4 mx-auto pt-2 pb-2 mb-3 form_wrapper" >
         <div class="text-center justify-content-center ">
             
                     
                     <form method="POST" action="">
                         {{ form.hidden_tag() }}
                         <fieldset class="form-group">
-                            <legend class="border-bottom mb-4">Transfer Money</legend>
+                            <legend class="border-bottom mb-4">Deposite Money</legend>
                             <div class="form-group">
                                 {{ form.source_account_id.label(class="form-control-label") }}
                                 {% if form.source_account_id.errors %}
-                                    {{ form.source_account_id(class="form-control form-control-lg is-invalid text-center") }}
+                                    {{ form.source_account_id(class="form-control custom-input form-control-lg is-invalid text-center") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.source_account_id.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                 {% else %}
-                                    {{ form.source_account_id(class="form-control form-control-lg text-center") }}
+                                    {{ form.source_account_id(class="form-control custom-input form-control-lg text-center") }}
                                 {% endif %}
                             </div>
                             <div class="form-group">
                                 {{ form.source_account_type.label(class="form-control-label") }}
                                 {% if form.source_account_type.errors %}
-                                    {{ form.source_account_type(class="form-control form-control-lg is-invalid text-center") }}
+                                    {{ form.source_account_type(class="form-control custom-input form-control-lg is-invalid text-center") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.source_account_type.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                 {% else %}
-                                    {{ form.source_account_type(class="form-control form-control-lg text-center") }}
+                                    {{ form.source_account_type(class="form-control custom-input form-control-lg text-center") }}
                                 {% endif %}
                             </div>
                             <div class="form-group">
                                 {{ form.target_account_id.label(class="form-control-label") }}
                                 {% if form.target_account_id.errors %}
-                                    {{ form.target_account_id(class="form-control form-control-lg is-invalid text-center") }}
+                                    {{ form.target_account_id(class="form-control custom-input form-control-lg is-invalid text-center") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.target_account_id.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                 {% else %}
-                                    {{ form.target_account_id(class="form-control form-control-lg text-center") }}
+                                    {{ form.target_account_id(class="form-control custom-input form-control-lg text-center") }}
                                 {% endif %}
                             </div>
                             <div class="form-group">
                                 {{ form.target_account_type.label(class="form-control-label") }}
                                 {% if form.target_account_type.errors %}
-                                    {{ form.target_account_type(class="form-control form-control-lg is-invalid text-center") }}
+                                    {{ form.target_account_type(class="form-control custom-input form-control-lg is-invalid text-center") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.target_account_type.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                 {% else %}
-                                    {{ form.target_account_type(class="form-control form-control-lg text-center") }}
+                                    {{ form.target_account_type(class="form-control custom-input form-control-lg text-center") }}
                                 {% endif %}
                             </div>
                             
                             <div class="form-group">
                                 {{ form.transfer_Amount.label(class="form-control-label") }}
                                 {% if form.transfer_Amount.errors %}
-                                    {{ form.transfer_Amount(class="form-control form-control-lg is-invalid text-center") }}
+                                    {{ form.transfer_Amount(class="form-control custom-input form-control-lg is-invalid text-center") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.transfer_Amount.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                 {% else %}
-                                    {{ form.transfer_Amount(class="form-control form-control-lg text-center") }}
+                                    {{ form.transfer_Amount(class="form-control custom-input form-control-lg text-center") }}
                                 {% endif %}
                             </div>
                             
                         </fieldset>
                         <div class="form-group">
-                            {{ form.submit(class="btn btn-outline-info") }}
+                            {{ form.submit(class="btn btn-outline-light") }}
                         </div>
                         
                     </form>

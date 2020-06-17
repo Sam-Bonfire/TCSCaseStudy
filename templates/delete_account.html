@@ -1,6 +1,6 @@
 {% extends "base2.html" %}
 {% block content %}
-    <div class="col-md-4 mx-auto pt-2 pb-2 mb-3" style=' background-color: rgba(255,255,255,0.7); border-radius: 4px;'>
+    <div class="col-md-4 mx-auto pt-2 pb-2 mb-3 form_wrapper">
         <div class="text-center justify-content-center ">
             
                     
@@ -12,34 +12,34 @@
                                 {{ form.account_id.label(class="form-control-label") }}
                     
                                 {% if form.account_id.errors %}
-                                    {{ form.account_id(class="form-control form-control-lg is-invalid text-center") }}
+                                    {{ form.account_id(class="form-control custom-input form-control-lg is-invalid text-center") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.account_id.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                 {% else %}
-                                    {{ form.account_id(class="form-control form-control-lg text-center") }}
+                                    {{ form.account_id(class="form-control custom-input form-control-lg text-center") }}
                                 {% endif %}
                             </div>
                             <div class="form-group">
                                 {{ form.account_type.label(class="form-control-label") }}
                                 {% if form.account_type.errors %}
-                                    {{ form.account_type(class="form-control form-control-lg is-invalid text-center") }}
+                                    {{ form.account_type(class="form-control custom-input form-control-lg is-invalid text-center") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.account_type.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                 {% else %}
-                                    {{ form.account_type(class="form-control form-control-lg text-center") }}
+                                    {{ form.account_type(class="form-control custom-input form-control-lg text-center") }}
                                 {% endif %}
                             </div>
                            
                             
                         </fieldset>
                         <div class="form-group">
-                            {{ form.submit(class="btn btn-outline-info") }}
+                            {{ form.submit(class="btn btn-outline-light") }}
                         </div>
                         
                     </form>

@@ -1,6 +1,6 @@
 {% extends "base2.html" %}
 {% block content %}
-    <div class="col-md-4 mx-auto pt-2 pb-2 mb-3" style=' background-color: rgba(255,255,255,0.7); border-radius: 4px;'>
+    <div class="col-md-4 mx-auto pt-2 pb-2 mb-3 form_wrapper" >
         <div class="text-center justify-content-center ">
             
                     
@@ -12,39 +12,39 @@
                                 {{ form.customer_ssn_id.label(class="form-control-label") }}
                     
                                
-                                    {{ form.customer_ssn_id(class="form-control form-control-lg text-center",readonly=True,value='"{ssn}}"') }}
+                                    {{ form.customer_ssn_id(class="form-control custom-input form-control-lg text-center",readonly=True,value='"{ssn}}"') }}
                                 
                             </div>
                             <div class="form-group">
                                 {{ form.customer_id.label(class="form-control-label") }}
                     
                                
-                                    {{ form.customer_id(class="form-control form-control-lg text-center",readonly=True,value='"{ssn}}"') }}
+                                    {{ form.customer_id(class="form-control custom-input form-control-lg text-center",readonly=True,value='"{ssn}}"') }}
                                 
                             </div>
                             <div class="form-group">
                                 {{ form.customer_name.label(class="form-control-label") }}
                                 
-                                    {{ form.customer_name(class="form-control form-control-lg text-center",readonly=True,value='"{ssn}}"') }}
+                                    {{ form.customer_name(class="form-control custom-input form-control-lg text-center",readonly=True,value='"{ssn}}"') }}
                                 
                             </div>
                             <div class="form-group">
                                 {{ form.age.label(class="form-control-label") }}
                                
-                                    {{ form.age(class="form-control form-control-lg text-center",readonly=True,value='"{ssn}}"') }}
+                                    {{ form.age(class="form-control custom-input form-control-lg text-center",readonly=True,value='"{ssn}}"') }}
                                 
                             </div>
                             <div class="form-group">
                                 {{ form.address.label(class="form-control-label") }}
                                 
-                                    {{ form.address(class="form-control form-control-lg text-center",readonly=True,value='"{ssn}}"') }}
+                                    {{ form.address(class="form-control custom-input form-control-lg text-center",readonly=True,value='"{ssn}}"') }}
                                
                             </div>
                            
                             
                         </fieldset>
                         <div class="form-group">
-                            {{ form.submit(class="btn btn-outline-info") }}
+                            {{ form.submit(class="btn btn-outline-light") }}
                         </div>
                         
                     </form>

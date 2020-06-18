@@ -9,9 +9,9 @@ class CreateCustomerForm(FlaskForm):
     customer_name = StringField('customer Name', validators=[DataRequired()])
     age = IntegerField('Age', validators=[DataRequired()])
     address = TextAreaField('Address', validators=[DataRequired()])
-    state = SelectField('State', choices=['Maharashtra', 'Gujrat'])
-    city = SelectField('City', choices=['Pune', 'Mumbai', 'Nashik'])
-    submit = SubmitField('SignUp')
+    state = SelectField('State', validators=[InputRequired()])
+    city = SelectField('City', validators=[InputRequired()])
+    submit = SubmitField('Create Customer')
 
 
 class DeleteCustomerForm(FlaskForm):

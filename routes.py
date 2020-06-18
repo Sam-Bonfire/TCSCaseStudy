@@ -20,9 +20,9 @@ app = Blueprint('app', __name__)
 @app.route("/home")
 def index():
     if current_user.is_authenticated:
-        return render_template("base.html", index=True, user=current_user.type)
+        return render_template("Home.html", index=True, user=current_user.type)
     else:
-        return render_template("base.html", index=True)
+        return redirect(url_for('app.login'),index=True)
 
 
 @app.route("/index")

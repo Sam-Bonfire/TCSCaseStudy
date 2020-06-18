@@ -64,14 +64,14 @@
                             <div class="form-group">
                                 {{ form.state.label(class="form-control-label") }}
                                 {% if form.state.errors %}
-                                    {{ form.state(class="form-control custom-input form-control-lg is-invalid text-center") }}
+                                    {{ form.state(class="form-control custom-input form-control-lg is-invalid text-center" onchange='getcity()') }}
                                         <div class="invalid-feedback">
                                             {% for error in form.state.errors %}
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                 {% else %}
-                                    {{ form.state(class="form-control custom-input form-control-lg text-center") }}
+                                    {{ form.state(class="form-control custom-input form-control-lg text-center" onchange='getcity()') }}
                                 {% endif %}
                             </div>
                             <div class="form-group">

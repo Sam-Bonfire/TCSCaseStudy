@@ -9,6 +9,34 @@
  <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"/>
 
+    <script type="text/javascript">
+
+    	
+
+        function getcity(){
+
+        	let selectedState = document.getElementById('state').value;
+    		let cityList = document.getElementById('city');
+
+    		fetch('/city/'+ selectedState).then(function(response){
+
+    			response.json().then(function(data){
+
+    				let optionHtml='';
+
+    				for(let city of data.cities){
+    					optionHtml+='<option value='+city.id+'>'+city.name+'</option>';
+    				}
+
+    				cityList.innerHTML=optionHtml
+    			})
+
+    		})
+            
+        }
+
+
+    </script>
 
 
     <style type="text/css">

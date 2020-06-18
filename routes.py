@@ -221,7 +221,7 @@ def search_customer():
 def create_user():
     states = [ data.state for data in Cities.query(Cities.state).distinct()]
     form=CreateCustomerForm()
-    form.states.choices=states
+    form.state.choices=states
     return render_template("create_user.html",form=form,states=states)
 
 

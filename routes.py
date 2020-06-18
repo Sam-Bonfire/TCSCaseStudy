@@ -5,8 +5,8 @@ from sqlalchemy import and_
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 
-from forms import AccountSearchForm, LoginForm, AccountForm, WithdrawMoneyForm, DepositMoneyForm, TransferMoneyForm, \
-    GetAccountStatementForm
+from forms import (AccountSearchForm, LoginForm, AccountForm, WithdrawMoneyForm, DepositMoneyForm, TransferMoneyForm,
+                    GetAccountStatementForm,CreateCustomerForm)
 from models import User, Customer, Account, Transaction ,Cities
 from app import db
 from random import randint
@@ -220,7 +220,9 @@ def search_customer():
 @app.route("/create_user")
 def create_user():
     states = [ data.state for data in Cities.query(Cities.state).distinct()]
-    return render_template("create_user.html",states=states)
+    form=CreateCustomerForm()
+    form.states.choices=states
+    return render_template("create_user.html",form=form,states=states)
 
 
 def randome_customer_id():

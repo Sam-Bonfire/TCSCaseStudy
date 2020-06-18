@@ -219,7 +219,8 @@ def search_customer():
 
 @app.route("/create_user")
 def create_user():
-    return render_template("create_user.html")
+    states = [ data.state for data in Cities.query(Cities.state).distinct()]
+    return render_template("create_user.html",states=states)
 
 
 def randome_customer_id():
@@ -312,8 +313,8 @@ def account_statement():
                                user=current_user.user_login)
 
 
-@app.route('/<string:state>')
+@app.route('/city/<string:state>')
 def getCity(state):
-    cities = Cities.query.order_by(Cities.id).all()
-    citie = [i.city for i in cities[:] if i.state == state]
-    return  str(citie)
+    city_options = [{'id':data.city,'city':data.city} for data in 
+                    Cities.query.filter(Cities.state.is_(state)).all()]
+    return jsonify({'cities':city_options})

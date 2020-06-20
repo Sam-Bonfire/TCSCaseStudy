@@ -15,7 +15,7 @@
 
         function getcity(){
 
-        	let selectedState = document.getElementById('state').value;
+        	let selectedState = document.getElementById('state');
     		let cityList = document.getElementById('city');
 
     		fetch('/city/'+ selectedState).then(function(response){
@@ -57,7 +57,7 @@
     	
       }
 
-      .form_wrapper{
+      .form_wraper{
       	background-color: #356aa0;
       	border-radius: 4px;
 
@@ -73,7 +73,7 @@
 	}
 
 	.navbar-nav .nav-link.active {
-	  font-weight: 500; 
+	  font-weight: 1500; 
 	}
 
 
@@ -217,7 +217,7 @@
 					</div>
 		        </div>
 
-				{% elif user == 'cashier'%}
+			
 
 					<li class="nav-item">
 					<a class="nav-link {% if request.endpoint == 'account_details'%} active {% endif %}" href="{url_for('create_customer')}}">Account Details </a>
